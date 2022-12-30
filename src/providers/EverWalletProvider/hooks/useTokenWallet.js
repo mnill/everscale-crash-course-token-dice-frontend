@@ -35,7 +35,6 @@ export function useTokenWallet(root_address, owner_address) {
   useEffect(() => {
     let stale = false;
     if (contract) {
-
       function updateBalance() {
         contract.methods.balance({answerId: 0}).call({responsible: true}).then((answer) => {
           if (!stale) {
@@ -52,11 +51,11 @@ export function useTokenWallet(root_address, owner_address) {
 
       // Subscribe for all tokenWallet transactions to update the balance.
       const subscriber = new ever.Subscriber();
-      subscriber.transactions(contract.address).on(() => {
-        if (!stale) {
-          updateBalance();
-        }
-      });
+      subscriber.states(contract.address).on(function () {
+          if (!stale) {
+            updateBalance();
+          }
+      })
 
       return () => {
         stale = true;

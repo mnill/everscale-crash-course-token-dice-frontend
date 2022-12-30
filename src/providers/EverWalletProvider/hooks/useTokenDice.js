@@ -32,7 +32,7 @@ export function useTokenDice() {
       updateMaxBet();
 
       const subscriber = new ever.Subscriber();
-      subscriber.transactions(contract.address).on((tx) => {
+      subscriber.states(contract.address).on((state) => {
         if (!stale) {
           updateMaxBet();
         }
