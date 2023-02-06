@@ -149,7 +149,7 @@ function App() {
         !isInitializing && <Fragment>
           {
             !hasProvider && <div className={'App-center-vertical-horizontal'}>
-              <a className={'button'} href={''} target={'_blank'}>
+              <a className={'button'} href={'https://everwallet.net'} target={'_blank'}>
                 Install EverWallet
               </a>
             </div>
