@@ -4,7 +4,8 @@ import React, {createContext, useCallback, useEffect, useState} from 'react';
 export const ever = new ProviderRpcClient();
 window.ever = ever;
 window.Address = Address;
-export const targetNetworkId = 2;
+export const targetNetworkId = 42;
+export const targetNetworkType = 'testnet';
 
 export const TokenDiceContractAddress = new Address("0:bcb9c806c30813c1ab1faf4ae6cae2f3b64c2cee75ff32c8760a534bae0da903");
 export const TokenRootContractAddress = new Address("0:e56ffdc692d7fa68534bab03e62e13fc2fb7b2be8aff1da94fdbf580290eb952");
@@ -23,6 +24,7 @@ export function EverWalletProvider({children}) {
     const [account, setAccount] = useState(undefined);
     const [hasProvider, setHasProvider] = useState(false);
     const [selectedNetworkId, setSelectedNetworkId] = useState(1);
+    const [selectedNetworkType, setSelectedNetworkType] = useState('mainnet');
     const [isInitializing, setIsInitializing] = useState(true);
 
     const [isConnectingInProgress, setIsConnectingInProgress] = useState(false);
@@ -55,6 +57,7 @@ export function EverWalletProvider({children}) {
             const currentProviderState = await ever.getProviderState();
             // Current networkId
             setSelectedNetworkId(currentProviderState.networkId);
+            setSelectedNetworkType(currentProviderState.selectedConnection);
             // Current account, can be undefined.
             setAccount(currentProviderState.permissions.accountInteraction);
             // Yes we have provider
@@ -89,7 +92,7 @@ export function EverWalletProvider({children}) {
 
     return <EverWalletContext.Provider value={{
         isInitializing,
-        isConnected: !isInitializing && !!account && selectedNetworkId === targetNetworkId,
+        isConnected: !isInitializing && !!account && selectedNetworkId === targetNetworkId && selectedNetworkType === targetNetworkType,
         hasProvider,
         selectedNetworkId,
         account,
